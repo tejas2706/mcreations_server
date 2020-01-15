@@ -1,0 +1,8 @@
+{
+
+    "host": {
+        "doc": "database hostname",
+        "default": "mongodb://localhost:27017/mcreations",
+        "env" : "MONGODB_HOST"
+    }
+}

@@ -1,0 +1,7 @@
+{
+    "override" : {
+        "default" : "./config/deployment.json"
+    },
+    "uploadFolder" :"/tmp",
+    "apiPrefix": "/api"
+}
