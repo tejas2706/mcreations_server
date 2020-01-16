@@ -22,9 +22,15 @@ class BaseModel {
     }
 
     findOne(query, qOpts) {
+        console.log("aaaaaaaaaaaaaaaaaaaaaa",this.dbMgr)
         return this.model.findOne.apply(this.model, arguments);
     }
 
+    // findOne(){
+    //     return new Promise((resolve,reject)=>{
+    //         return this.model.findOne.apply(this.model)
+    //     })
+    // }
     create(rec, opts) {
         return this.model.create.apply(this.model, arguments);
     }
