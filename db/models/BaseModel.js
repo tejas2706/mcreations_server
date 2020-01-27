@@ -22,7 +22,6 @@ class BaseModel {
     }
 
     findOne(query, qOpts) {
-        console.log("aaaaaaaaaaaaaaaaaaaaaa",this.dbMgr)
         return this.model.findOne.apply(this.model, arguments);
     }
 
@@ -34,6 +33,7 @@ class BaseModel {
     create(rec, opts) {
         return this.model.create.apply(this.model, arguments);
     }
+    
     update(matchCnd, updateArgs, opts) {
         opts = opts || {};
         if (!updateArgs) {

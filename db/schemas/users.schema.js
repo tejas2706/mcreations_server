@@ -5,7 +5,7 @@
 const user = {
     "_id": {
         type: String,
-        trim: true
+        trim: true,
     },
     "hash": {
         type: String,

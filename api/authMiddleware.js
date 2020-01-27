@@ -10,6 +10,7 @@ passport.use(new LocalStrategy(
     function (username, password, done) {
         User.findAndCheck(username, password)
             .then(user => {
+            console.log("TCL: user", user)
                 let token = jwt.sign({
                     username: username
                 }, config.get("auth.jwt.secret"), {

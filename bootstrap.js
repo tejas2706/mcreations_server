@@ -3,7 +3,6 @@ var debug   = require("debug");
 var Promise = require('bluebird');
 var config  = require("./config");
 var cache   = require('memory-cache');
-
 var debug;
 var globals = {};
 
@@ -85,7 +84,7 @@ function prepareGlobalConstants(_globals) {
 function essentials(conf){
     //so we can enable debug from config
     //require('./bootstrap.debug.js')(conf);
-    debug       = require('debug')('bootstrap');
+    debug = require('debug')('bootstrap');
     globals.config(conf);
     globals.cache();
     return Promise.resolve()
@@ -95,7 +94,7 @@ function essentials(conf){
 exports.init = async function(conf) {
         await essentials(conf);
         await prepareGlobalConstants();
-     return    await initiateDataBase();
+     return await initiateDataBase();
 };
 
 

@@ -12,7 +12,7 @@ const config = require("../config")
 class DBManager {
 
     constructor(config) {
-        this.name = config.name || 'dbmanager';
+        this.name = config.dbName || 'dbmanager';
         this.debug = debug('dbmanager');
         this.config = config;
         this.mongoose = mongoose;
@@ -39,7 +39,7 @@ class DBManager {
                 let schema = require(path.resolve(__dirname, './schemas/' + file))
                 let _schema = new mongoose.Schema(schema)
                 _schema.plugin(mongoosePaginate);
-                mongoose.model(file.split(".")[0], new mongoose.Schema(_schema));
+                mongoose.model(file.split(".")[0], new mongoose.Schema(_schema));//TODO: why schema object made again
                 this.debug('loaded schema %s', file);
             })
             .value();

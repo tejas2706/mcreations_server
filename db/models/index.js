@@ -15,7 +15,7 @@ module.exports.init = function (dbMgr) {
 
     var files;
 
-    debug('loading models');
+    console.log('loading models');
     files = fs.readdirSync(path.resolve(__dirname, './'));
     _
         .chain(files)
