@@ -3,6 +3,10 @@ var BaseService = require("./BaseService.js");
 var Model = appGlobals.dbModels;
 var modelName = "products";
 var _ = require("lodash");
+var fs = require("fs")
+const csv = require('csvtojson');
+const Busboy = require("busboy");
+const PromiseB = require("bluebird");
 
 function ProductDetailsService() {
     BaseService.call(this);
@@ -44,6 +48,46 @@ ProductDetailsService.prototype.addProducts = async function(data) {
         throw {"message":`ProductDetails not added`};
     }
   }catch(error){
+    return error
+  }
+}
+
+ProductDetailsService.prototype.addProductsBulk = async function(req) {
+  try{
+    var busboy = new Busboy({headers:req.headers});
+    let filename = "hello.csv", headers = [];
+    var tempFilePath = "../../"+filename;
+    let writeStream = fs.createWriteStream(tempFilePath);
+    
+    busboy.on("file", function(fieldname, file, filename){
+      console.log("Saving file: ", filename);
+      file.pipe(writeStream);
+    });
+
+    busboy.on("finish", function(){
+      console.log("Finished busboy file upload");
+    });
+    req.pipe(busboy);
+
+    writeStream.on("finish", ()=>{
+      writeStream.end();
+      csv({
+        noheader:false
+      })
+      .fromFile(tempFilePath)
+      .then((allProducts)=>{
+        PromiseB.map(allProducts,async (eachProduct)=>{
+          await this.addProducts(eachProduct)
+        })
+        console.log("TCL: allProducts", allProducts)
+        return allProducts
+      })
+
+    })
+
+
+  }catch(error){
+    console.log("error",error);
     return error
   }
 }
