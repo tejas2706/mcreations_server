@@ -3,6 +3,7 @@
 const products = {
     "_id": {
         type: String,
+        trim:true
     },
     "productName": {
         "type": String,

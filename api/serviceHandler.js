@@ -10,8 +10,6 @@ function errorHandler(err, req, res) {
 
 function serviceHandler(req, res, serviceP) {
     serviceP.then(function(body) {
-    console.log("TCL: serviceHandler -> body", body)
-
         body = _.isUndefined(body) ? {} : body;
         res.status(200).send(body);
     }).catch(function(e) {

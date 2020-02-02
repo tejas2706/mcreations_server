@@ -50,7 +50,6 @@ module.exports.start = function() {
         if (err) {
             console.log('Error in starting api server:', err);
         }
-
         console.log("api server listening on",  process.env.API_PORT || 3000);
     });
 };
