@@ -4,16 +4,16 @@
 
 const user = {
     "_id": {
-        type: String,
-        trim: true,
+        "type": String,
+        "trim": true,
     },
     "hash": {
-        type: String,
-        required: true
+        "type": String,
+        "required": true
     },
     "username": {
         "type": String,
-        trim: true,
+        "trim": true,
         "minlength": 1,
         "maxlength": 50,
         "index": true,
@@ -21,13 +21,13 @@ const user = {
     },
     "firstName": {
         "type": String,
-        trim: true,
+        "trim": true,
         "minlength": 1,
         "maxlength": 50
     },
     "lastName": {
         "type": String,
-        trim: true,
+        "trim": true,
         "minlength": 1,
         "maxlength": 50
     },
@@ -35,9 +35,13 @@ const user = {
         "type": String,
         "required": true
     },
+    "isAdmin":{
+        "type": String,
+        "required": true
+    },
     "mOn": {
-        type: Date,
-        default: Date.now
+        "type": Date,
+        "default": Date.now
     }
 };
 

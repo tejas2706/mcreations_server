@@ -8,16 +8,23 @@ Promise.promisifyAll(jwt)
 
 passport.use(new LocalStrategy(
     function (username, password, done) {
+    console.log("username", username)
         User.findAndCheck(username, password)
             .then(user => {
-            console.log("TCL: user", user)
-                let token = jwt.sign({
+                let userObject = {
                     username: username
-                }, config.get("auth.jwt.secret"), {
+                }
+                if(user.isAdmin){
+                    userObject.isAdmin = true;
+                }
+                let token = jwt.sign(userObject, config.get("auth.jwt.secret"), {
                     expiresIn: config.get("auth.jwt.expiresIn")
                 })
+                console.log("TCL: token", token)
                 return done(null, {
-                    token: token
+                    token: token,
+                    username: username,
+                    isAdmin: user.isAdmin
                 });
             })
             .catch(e => {
@@ -30,6 +37,8 @@ passport.use(new LocalStrategy(
 ));
 passport.use(new BearerStrategy(
     function (token, done) {
+        console.log(token)
+        done(null,true)
         jwt.verifyAsync(token, config.get("auth.jwt.secret")).then((data) => {
             User.findOne({
                 username: data.username
@@ -39,7 +48,7 @@ passport.use(new BearerStrategy(
                 console.info(e);
                 done(null, false)
             });
-        }).catch(e => {
+        }).catch(e => {  
             console.info(e);
             done(null, false);
         });
@@ -57,7 +66,8 @@ function signup(req, res, next) {
         var newUser = {
             username: req.body.username,
             password: req.body.password,
-            emailId: req.body.emailId
+            emailId: req.body.emailId,
+            isAdmin: req.body.isAdmin || false
         };
         // save the user
         User.create(newUser).then(() => {

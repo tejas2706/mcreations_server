@@ -39,6 +39,19 @@ ProductDetailsService.prototype.getProductDetails = async function(productId){
   }
 }
 
+ProductDetailsService.prototype.getProductDetailsByCategory = async function(productId){
+  try{
+    let productDetails = await model.findOne({"category":productId}, {hash:0});
+    if(!_.isEmpty(productDetails)){
+        return productDetails;
+    }else{
+        throw {"message":`No productDetails found for productId : ${productId}`};
+    }
+  }catch(error){
+    return error
+  }
+}
+
 ProductDetailsService.prototype.addProducts = async function(data) {
   try{
     let productDetails = await model.create(data);

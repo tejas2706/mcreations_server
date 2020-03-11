@@ -7,6 +7,11 @@ module.exports.init = function (app) {
         return serviceHandler(req, res, p)
     });
 
+    app.get('/products/getProductDetailsByCategory/:category', function(req, res){
+        let p = productDetailsService.getProductDetails(req.params.category)
+        return serviceHandler(req, res, p)
+    });
+
     app.get('/products/getProducts', function(req, res){
         let p = productDetailsService.getProducts()
         return serviceHandler(req, res, p)
