@@ -8,7 +8,7 @@ module.exports.init = function (app) {
     });
 
     app.get('/products/getProductDetailsByCategory/:category', function(req, res){
-        let p = productDetailsService.getProductDetails(req.params.category)
+        let p = productDetailsService.getProductDetailsByCategory(req.params.category)
         return serviceHandler(req, res, p)
     });
 
@@ -24,6 +24,12 @@ module.exports.init = function (app) {
 
     app.post('/products/addProductsBulk', function(req,res){
         let p =productDetailsService.addProductsBulk(req)
+        return serviceHandler(req,res,p);
+    })
+
+    app.put('/products/editProduct',function(req,res){
+    console.log("module.exports.init -> req", req.body)
+        let p =productDetailsService.editProduct(req.body)
         return serviceHandler(req,res,p);
     })
 };

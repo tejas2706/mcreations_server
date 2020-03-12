@@ -93,8 +93,8 @@ module.exports.init = function (app) {
     }), function (req, res, next) {
         res.send(req.user)
     })
-    app.use("/", passport.authenticate("bearer", {
-        session: false,
-        authenticate: false
-    }))
+    // app.use("/", passport.authenticate("bearer", {
+    //     session: false,
+    //     authenticate: false
+    // }))
 };

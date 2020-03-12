@@ -31,6 +31,12 @@ const products = {
         "type": Number,
         "required": true
     },
+    "imgUrl":{
+        "type": String
+    },
+    "price":{
+        "type": Number
+    },
     "mOn": {
         type: Date,
         default: Date.now

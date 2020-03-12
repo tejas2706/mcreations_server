@@ -41,12 +41,13 @@ ProductDetailsService.prototype.getProductDetails = async function(productId){
 
 ProductDetailsService.prototype.getProductDetailsByCategory = async function(productId){
   try{
-    let productDetails = await model.findOne({"category":productId}, {hash:0});
-    if(!_.isEmpty(productDetails)){
-        return productDetails;
-    }else{
-        throw {"message":`No productDetails found for productId : ${productId}`};
-    }
+    let productDetails = await model.find({"category":productId}, {hash:0});
+    // if(!_.isEmpty(productDetails)){
+    //     return productDetails;
+    // }else{
+        
+    // }
+    return productDetails;
   }catch(error){
     return error
   }
@@ -54,7 +55,9 @@ ProductDetailsService.prototype.getProductDetailsByCategory = async function(pro
 
 ProductDetailsService.prototype.addProducts = async function(data) {
   try{
+    console.log("data", data)
     let productDetails = await model.create(data);
+    console.log("productDetails", productDetails)
     if(!_.isEmpty(productDetails)){
         return productDetails;
     }else{
@@ -103,6 +106,19 @@ ProductDetailsService.prototype.addProductsBulk = async function(req) {
     console.log("error",error);
     return error
   }
+}
+
+
+ProductDetailsService.prototype.editProduct = async function(body){
+console.log("body", body)
+    try{
+      let updatedProduct = await model.update({_id: body.findBy},{$set: body.productToEdit})
+      console.log("updatedProduct", updatedProduct)
+      return updatedProduct;
+    }catch(error){
+      console.log("error", error)
+      return error;
+    }
 }
 
 module.exports = {
