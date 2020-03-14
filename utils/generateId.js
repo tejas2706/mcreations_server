@@ -20,7 +20,8 @@ function initIDGenerators (_idmap, _idgen) {
 
 var idmap = {
     User    : 'u',
-    Products : 'p'
+    Products : 'p',
+    Orders: 'o'
 };
 
 initIDGenerators(idmap, IDGeneratorFactory);

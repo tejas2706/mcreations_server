@@ -56,7 +56,6 @@ passport.use(new BearerStrategy(
 ));
 
 function signup(req, res, next) {
-    console.log("TCL: signup -> req", req.body)
     if (!req.body.username || !req.body.password) {
         res.json({
             success: false,

@@ -49,7 +49,7 @@ class BaseModel {
                     "mOn": new Date()
                 };
         }
-        return this.model.update(matchCnd, updateArgs, opts);
+        return this.model.updateOne(matchCnd, updateArgs, opts);
     }
     remove(query,opts) {
         return this.model.remove.apply(this.model,arguments);
