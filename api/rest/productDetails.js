@@ -32,4 +32,9 @@ module.exports.init = function (app) {
         let p =productDetailsService.editProduct(req.body)
         return serviceHandler(req,res,p);
     })
+
+    app.post('/products/uploadImage',function(req,res){
+        let p = productDetailsService.uploadImage(req);
+        return serviceHandler(req,res,p);
+    });
 };

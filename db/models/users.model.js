@@ -28,7 +28,11 @@ class UsersModel extends BaseModel {
                 return Promise.reject(new Error("user not found"))
             return bcrypt.compareAsync(password, user.hash)
                 .then(match => {
+                    if(!match)
+                        throw new Error("Password does not match");
                     return user
+                }).catch(err=>{
+                    throw err;
                 })
         })
     }

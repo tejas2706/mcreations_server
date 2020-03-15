@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "aws-sdk": "^2.639.0",
     "bcrypt-nodejs": "0.0.3",
     "bluebird": "^3.7.2",
     "busboy": "^0.3.1",

@@ -7,6 +7,14 @@ var fs = require("fs")
 const csv = require('csvtojson');
 const Busboy = require("busboy");
 const PromiseB = require("bluebird");
+const AWS = require('aws-sdk');
+const awsDetails = config.get('awsDetails');
+const utils = require('../../utils')
+
+AWS.config.update({
+    accessKeyId: awsDetails.key,
+    secretAccessKey: awsDetails.secret
+});
 
 function ProductDetailsService() {
     BaseService.call(this);
@@ -28,7 +36,8 @@ ProductDetailsService.prototype.getProducts = async function(){
 
 ProductDetailsService.prototype.getProductDetails = async function(productId){
   try{
-    let productDetails = await model.findOne({"_id":productId}, {hash:0});
+    let productDetails = await model.findOne({"_id":productId}, {availableQuantity: 1});
+    console.log("productDetails", productDetails)
     if(!_.isEmpty(productDetails)){
         return productDetails;
     }else{
@@ -55,9 +64,7 @@ ProductDetailsService.prototype.getProductDetailsByCategory = async function(pro
 
 ProductDetailsService.prototype.addProducts = async function(data) {
   try{
-    console.log("data", data)
     let productDetails = await model.create(data);
-    console.log("productDetails", productDetails)
     if(!_.isEmpty(productDetails)){
         return productDetails;
     }else{
@@ -119,6 +126,33 @@ console.log("body", body)
       console.log("error", error)
       return error;
     }
+}
+
+ProductDetailsService.prototype.uploadImage = async function(req){
+    var uid = utils.UploadImage();
+    var id = bucket.path + uid;
+    var busboy = new Busboy({ headers: req.headers });
+    var s3bucket = new AWS.S3({ Bucket: bucketName })
+
+    busboy.on('file', (fieldname, file, filename, encoding, mimetype) => {
+        if (mimetype == 'image/jpeg' || mimetype == 'image/png') {
+            s3url = id + "_" + filename;
+            var objectParams = { Bucket: bucketName, Key: s3url, Body: file, ACL: "public-read" };
+            return s3bucket.upload(objectParams, function (err, data) {
+                if (err)
+                    {
+                    res.sendStatus(400).end("ERROR:", err);
+                    }
+                if (data) {
+                    res.end(JSON.stringify({url:bucket.cloudfrontUrl+s3url}));
+                }
+            });
+        }
+        else {
+            res.send('Invalid MimeType')
+        }
+    });
+    req.pipe(busboy)
 }
 
 module.exports = {

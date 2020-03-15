@@ -56,33 +56,46 @@ passport.use(new BearerStrategy(
 ));
 
 function signup(req, res, next) {
-    if (!req.body.username || !req.body.password) {
-        res.json({
-            success: false,
-            msg: 'Please pass username and password.'
-        });
-    } else {
-        var newUser = {
-            username: req.body.username,
-            password: req.body.password,
-            emailId: req.body.emailId,
-            isAdmin: req.body.isAdmin || false
-        };
-        // save the user
-        User.create(newUser).then(() => {
+
+    try{
+        console.log("TCL: signup -> req", req.body)
+        if (!req.body.username || !req.body.password || !req.body.adminPassword) {
             res.json({
-                success: true,
-                msg: 'Successful created new user.'
+                success: false,
+                msg: 'Please pass username, password and admin password.'
             });
-        }).catch(err => {
-            console.log('err', err)
-            if (err) {
-                return res.json({
+        } else {
+            if(req.body.adminPassword != config.get("auth.adminPassword")){
+                return res.status(401).json({
                     success: false,
-                    msg: err.msg || err.errmsg
-                });
+                    msg: "Admin Password does not match"
+                })
             }
-        });
+            var newUser = {
+                username: req.body.username,
+                password: req.body.password,
+                emailId: req.body.emailId,
+                isAdmin: req.body.isAdmin || false
+            };
+            // save the user
+            User.create(newUser).then(() => {
+                res.json({
+                    success: true,
+                    msg: 'Successful created new user.'
+                });
+            }).catch(err => {
+                console.log('err', err)
+                if (err) {
+                    return res.json({
+                        success: false,
+                        msg: err.msg || err.errmsg
+                    });
+                }
+            });
+        }
+    }catch(err){
+        console.log("signup -> err", err)
+        return res.status(401).send(err);
     }
 }
 module.exports.init = function (app) {

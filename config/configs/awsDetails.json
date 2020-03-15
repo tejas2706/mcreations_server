@@ -1,0 +1,17 @@
+{
+    "key": {
+        "doc": "aws s3 key",
+        "default": "",
+        "env" : "AWS_S3_KEY"
+    },
+    "secret": {
+        "doc": "aws s3 secret",
+        "default": "",
+        "env" : "AWS_S3_SECRET"
+    },
+    "bucket": {
+        "doc": "aws s3 bucket name",
+        "default": "",
+        "env" : "AWS_S3_BUCKET_NAME"
+    }
+}
