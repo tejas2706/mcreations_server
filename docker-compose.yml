@@ -1,0 +1,39 @@
+version: "3"
+networks:
+  playalong:
+
+services:
+  mongo:
+    container_name: mongo
+    image: mongo
+    restart: always
+    ports:
+      - 27017:27017
+    networks:
+      - playalong
+
+  # redis:
+  #   container_name: redis
+  #   image: redis
+  #   command: redis-server
+  #   ports:
+  #     - 6379:6379
+  #   networks:
+  #     - playalong
+
+  # rabbit:
+  #   container_name: rabbit
+  #   build:
+  #     context: ./rabbitmq
+  #     dockerfile: ./rabbitmq.Dockerfile
+  #   environment:
+  #     - RABBITMQ_ERLANG_COOKIE='secret_cookie'
+  #     - RABBITMQ_USER=rabbitmq
+  #     - RABBITMQ_PASSWORD=rabbitmq
+  #   networks:
+  #     - playalong
+  #   ports:
+  #     - "15672:15672"
+  #     - "5672:5672"
+
+  
