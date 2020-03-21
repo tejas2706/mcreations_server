@@ -21,6 +21,7 @@ function ProductDetailsService() {
 }
 
 const model = Model.getModel(modelName);
+const orderModel = Model.getModel('orders')
 ProductDetailsService.prototype.getProducts = async function(){
   try{
     let products = await model.find({ }, { hash:0 });
@@ -36,13 +37,14 @@ ProductDetailsService.prototype.getProducts = async function(){
 
 ProductDetailsService.prototype.getProductDetails = async function(productId){
   try{
-    let productDetails = await model.findOne({"_id":productId}, {availableQuantity: 1});
-    console.log("productDetails", productDetails)
-    if(!_.isEmpty(productDetails)){
-        return productDetails;
-    }else{
-        throw {"message":`No productDetails found for productId : ${productId}`};
-    }
+    let orderDetails = await orderModel.findOne({"_id": productId});
+    let availableQuantities = {}
+    return PromiseB.map(orderDetails.products,async eachProduct=>{
+      let productDetails = await model.findOne({"_id":eachProduct._id}, {_id:0, availableQuantity: 1});
+      availableQuantities[eachProduct._id] = productDetails.availableQuantity ;
+    }).then(()=>{
+      return availableQuantities;
+    })
   }catch(error){
     return error
   }
